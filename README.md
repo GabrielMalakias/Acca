@@ -1,6 +1,6 @@
 # Acca
 
-**TODO: Add description**
+A POC using GenServers, Dynamic Supervisors and more stuff
 
 ## Installation
 
