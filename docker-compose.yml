@@ -1,5 +1,17 @@
 version: "3.3"
 services:
+  worker_2:
+   build: ./acca_worker
+   command: mix run --no-halt
+   environment:
+     NODE: worker_2
+     LOGGER_API: timeline
+  worker_1:
+   build: ./acca_worker
+   command: mix run --no-halt
+   environment:
+     NODE: worker_1
+     LOGGER_API: timeline
   timeline:
     build: ./timeline
     command: mix run --no-halt

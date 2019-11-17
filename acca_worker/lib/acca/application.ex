@@ -7,7 +7,8 @@ defmodule Acca.Application do
     HTTPoison.start
 
     children = [
-      Acca.Worker.DynamicSupervisor
+      Acca.Worker.DynamicSupervisor,
+      Acca.Worker.Producer
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one)

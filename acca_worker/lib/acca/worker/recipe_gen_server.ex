@@ -23,23 +23,26 @@ defmodule Acca.Worker.RecipeGenServer do
   end
 
   @impl true
-  def handle_info({:tcp}, state) do
-    {:noreply, state}
-  end
-
-  @impl true
   def handle_info(:cook, state) do
     %{cooked_for: seconds, name: name, id: id} = state
 
     Logger.info %{msg: "Cooking #{name} #{id} for #{seconds} seconds"}
 
-    schedule_work()
+    schedule_or_terminate(seconds)
 
     {:noreply, Map.put(state, :cooked_for, seconds + 1)}
   end
 
+  defp schedule_or_terminate(passed_seconds) when passed_seconds > 30 do
+    Process.send_after(self(), :done, 10)
+  end
+
+  defp schedule_or_terminate(_seconds) do
+    schedule_work()
+  end
+
   @impl true
-  def handle_cast(:finished, state) do
+  def handle_info(:done, state) do
     %{name: name} = state
 
     Logger.info %{msg: "Finished #{name}"}

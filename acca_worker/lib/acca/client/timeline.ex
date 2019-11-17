@@ -6,7 +6,17 @@ defmodule Acca.Client.Timeline do
   defp request(data) do
     payload = Jason.encode!(%{"data" => Map.put(data, :node, identifier)})
 
-    HTTPoison.post("http://localhost:4001", payload, headers)
+    host
+    |> build_uri
+    |> HTTPoison.post(payload, headers)
+  end
+
+  defp build_uri({:ok, host}) do
+    "http://#{host}:4001"
+  end
+
+  defp build_uri(_args) do
+    "http://localhost:4001"
   end
 
   defp headers do
@@ -19,5 +29,9 @@ defmodule Acca.Client.Timeline do
 
   defp identifier do
     System.fetch_env!("NODE")
+  end
+
+  defp host do
+    System.fetch_env("LOGGER_API")
   end
 end
