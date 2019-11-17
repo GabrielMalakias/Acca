@@ -1,13 +1,16 @@
 defmodule Acca.Client.Timeline do
-  def log(data) do
-    connect()
-    |> request(data)
+  def info(data) do
+    request(Map.put(data, :severity, "INFO"))
   end
 
-  defp request({:ok, conn}, data) do
+  defp request(data) do
     payload = Jason.encode!(%{"data" => Map.put(data, :node, identifier)})
 
-    Mint.HTTP.request(conn, "POST", "/", [{"Content-Type", "application/json"}], payload)
+    HTTPoison.post("http://localhost:4001", payload, headers)
+  end
+
+  defp headers do
+    [{"Content-Type", "application/json"}]
   end
 
   defp request(_error, data) do
@@ -16,9 +19,5 @@ defmodule Acca.Client.Timeline do
 
   defp identifier do
     System.fetch_env!("NODE")
-  end
-
-  defp connect do
-    Mint.HTTP.connect(:http, "localhost", 4001)
   end
 end

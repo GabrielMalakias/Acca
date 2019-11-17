@@ -1,5 +1,5 @@
 {application,acca,
-             [{applications,[kernel,stdlib,elixir,logger,mint,jason]},
+             [{applications,[kernel,stdlib,elixir,logger,httpoison,jason]},
               {description,"acca"},
               {modules,['Elixir.Acca','Elixir.Acca.Application',
                         'Elixir.Acca.Client.Timeline',

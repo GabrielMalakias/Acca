@@ -4,6 +4,8 @@ defmodule Acca.Application do
   use Application
 
   def start(_type, _args) do
+    HTTPoison.start
+
     children = [
       Acca.Worker.DynamicSupervisor
     ]

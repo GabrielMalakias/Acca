@@ -1,22 +1,16 @@
 defmodule Acca.Worker.RecipeGenServer do
   use GenServer, restart: :transient
 
-  # %{
-  #   cooked_for: 0,
-  #   name: :pizza
-  #   id: 1
-  # }
-  #
+  alias Acca.Client.Timeline, as: Logger
+
   @impl true
   def init(state) do
-    # Schedule work to be performed on start
     schedule_work()
 
     {:ok, state}
   end
 
   def start_link(state) do
-    # This would be a call to external server to get the status
     retrieve_info(state)
 
     %{name: name, id: id} = state
@@ -29,10 +23,15 @@ defmodule Acca.Worker.RecipeGenServer do
   end
 
   @impl true
+  def handle_info({:tcp}, state) do
+    {:noreply, state}
+  end
+
+  @impl true
   def handle_info(:cook, state) do
     %{cooked_for: seconds, name: name, id: id} = state
 
-    IO.puts "Cooking #{name} #{id} for #{seconds} seconds"
+    Logger.info %{msg: "Cooking #{name} #{id} for #{seconds} seconds"}
 
     schedule_work()
 
@@ -43,7 +42,7 @@ defmodule Acca.Worker.RecipeGenServer do
   def handle_cast(:finished, state) do
     %{name: name} = state
 
-    IO.puts "Finished #{name}"
+    Logger.info %{msg: "Finished #{name}"}
 
     DynamicSupervisor.terminate_child(Acca.Worker.DynamicSupervisor, self())
 
@@ -51,7 +50,7 @@ defmodule Acca.Worker.RecipeGenServer do
   end
 
   def retrieve_info(%{name: name, id: id}) do
-    IO.puts "Retrieving Info from api/#{name}/#{id}"
+    Logger.info %{msg: "Retrieving Info from api/#{name}/#{id}"}
   end
 
   def schedule_work do

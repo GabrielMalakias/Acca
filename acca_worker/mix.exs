@@ -14,7 +14,7 @@ defmodule Acca.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :httpoison],
       mod: {Acca.Application, []}
     ]
   end
@@ -22,8 +22,8 @@ defmodule Acca.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:mint, "~> 1.0"},
-      {:jason, "~> 1.1"}
+      {:jason, "~> 1.1"},
+      {:httpoison, "~> 1.6"}
     ]
   end
 end
