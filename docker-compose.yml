@@ -1,0 +1,8 @@
+version: "3.3"
+services:
+  timeline:
+    build: ./timeline
+    command: mix run --no-halt
+    expose:
+      - "4001"
+
