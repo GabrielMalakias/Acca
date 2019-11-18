@@ -12,4 +12,9 @@ defmodule Timeline.Router do
 
     send_resp(conn, 200, "Ok")
   end
+
+
+  get "/load" do
+    send_resp(conn, 200, "Ok")
+  end
 end

@@ -1,5 +1,9 @@
 version: "3.3"
 services:
+  redis:
+    image: redis:5
+    ports:
+      - "6379:6379"
   worker_2:
    build: ./acca_worker
    command: mix run --no-halt
