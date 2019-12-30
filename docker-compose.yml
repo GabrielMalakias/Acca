@@ -21,4 +21,13 @@ services:
     command: mix run --no-halt
     expose:
       - "4001"
+  db:
+    image: postgres:11-alpine
+    ports:
+      - "5432"
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+
+
+
 
