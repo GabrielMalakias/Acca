@@ -1,22 +1,18 @@
 defmodule SortingHat.Timeline do
   def info(data) do
-    request(:put, '/', Map.put(data, :severity, "INFO"))
+    request(Map.put(data, :severity, "INFO"))
   end
 
-  def load do
-    request(:get, '/load', %{})
-  end
-
-  defp request(method, path, data) do
+  defp request(data) do
     payload = Jason.encode!(%{"data" => Map.put(data, :node, identifier)})
 
-    uri = build_uri(host, path)
-
-    apply(HTTPoison, post, uri, payload, headers)
+    host
+    |> build_uri
+    |> HTTPoison.post(payload, headers)
   end
 
-  defp build_uri({:ok, host}, path) do
-    "http://#{host}:4001/#{path}"
+  defp build_uri({:ok, host}) do
+    "http://#{host}:4001"
   end
 
   defp build_uri(_args) do

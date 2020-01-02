@@ -16,6 +16,11 @@ services:
    environment:
      NODE: worker_1
      LOGGER_API: timeline
+  sorting_hat:
+    build: ./sorting_hat
+    command: mix run --no-halt
+    expose:
+      - "4002"
   timeline:
     build: ./timeline
     command: mix run --no-halt
